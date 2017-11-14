@@ -67,7 +67,7 @@ module Apotomo
 
         return render_iframe_updates(page_updates) if params[:apotomo_iframe]
 
-        render :text => page_updates.join("\n"), :content_type => Mime::JS
+        render :plain => page_updates.join("\n"), :content_type => Mime[:js]
       end
 
       # Returns the url to trigger a +type+ event from +:source+, which is a non-optional parameter.
@@ -90,7 +90,7 @@ module Apotomo
       def render_iframe_updates(page_updates)
         escaped_script = Apotomo::JavascriptGenerator.escape(page_updates.join("\n"))
 
-        render :text => "<html><body><script type='text/javascript' charset='utf-8'>
+        render :plain => "<html><body><script type='text/javascript' charset='utf-8'>
 var loc = document.location;
 with(window.parent) { setTimeout(function() { window.eval('#{escaped_script}'); window.loc && loc.replace('about:blank'); }, 1) }
 </script></body></html>", :content_type => 'text/html'
